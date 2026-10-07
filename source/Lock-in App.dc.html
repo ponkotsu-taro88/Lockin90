@@ -197,6 +197,21 @@
           <div style="display:flex;flex-direction:column;"><span style="font-size:15px;font-weight:800;">Exercise library</span><span style="font-size:12px;color:#5F6059;">{{ libCount }} exercises · rep range, weight step, rest</span></div>
           <span style="font-size:13px;color:#5F6059;">▶</span>
         </div>
+        <span style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#5F6059;padding:6px 6px 0;">BACKUP</span>
+        <div style="background:#ECEDE6;border-radius:16px;box-shadow:inset 0 2px 6px rgba(0,0,0,0.12);padding:12px;display:flex;flex-direction:column;gap:10px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <div onClick="{{ bkExport }}" style="height:46px;border-radius:12px;background:#EFEFEA;box-shadow:0 3px 0 #B3B4AC;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;letter-spacing:0.06em;cursor:pointer;" style-active="transform:translateY(2px);box-shadow:none;">EXPORT</div>
+            <div onClick="{{ bkImport }}" style="height:46px;border-radius:12px;background:#EFEFEA;box-shadow:0 3px 0 #B3B4AC;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;letter-spacing:0.06em;cursor:pointer;" style-active="transform:translateY(2px);box-shadow:none;">IMPORT</div>
+          </div>
+          <sc-if value="{{ bkOpen }}" hint-placeholder-val="{{ false }}">
+            <textarea value="{{ bkText }}" onChange="{{ onBkText }}" placeholder="{{ bkPh }}" style="height:110px;border:none;outline:none;border-radius:12px;background:#ECEDE6;box-shadow:inset 0 2px 6px rgba(0,0,0,0.12);padding:10px 12px;font-family:'Red Hat Mono',monospace;font-size:11px;line-height:1.5;color:#1E1F1C;resize:none;user-select:text;-webkit-user-select:text;"></textarea>
+            <span style="font-size:12px;color:#4A4B45;line-height:1.5;text-wrap:pretty;">{{ bkMsg }}</span>
+            <sc-if value="{{ bkIsImport }}" hint-placeholder-val="{{ false }}">
+              <div onClick="{{ bkApply }}" style="height:46px;border-radius:12px;background:#EFEFEA;box-shadow:0 3px 0 #B3B4AC;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;letter-spacing:0.06em;cursor:pointer;" style-active="transform:translateY(2px);box-shadow:none;">{{ bkApplyLabel }}</div>
+            </sc-if>
+            <div onClick="{{ bkClose }}" style="padding:2px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#5F6059;cursor:pointer;">Close</div>
+          </sc-if>
+        </div>
         <span style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#5F6059;padding:6px 6px 0;">DATA</span>
         <div style="padding:0 6px;font-size:12px;color:#4A4B45;line-height:1.5;text-wrap:pretty;">Saved on this device. On iPhone: Safari → Share → Add to Home Screen.</div>
         <div onClick="{{ resetTap }}" style="height:48px;border-radius:12px;background:#EFEFEA;box-shadow:0 3px 0 #B3B4AC;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;cursor:pointer;">{{ resetLabel }}</div>
@@ -603,8 +618,8 @@ class Component extends DCLogic {
   static FIRST = '2026-10-04';
   static LAST = '2026-12-31';
   static P = [['Pink',0],['Lilac',320],['Lavender',290],['Periwinkle',265],['Sky',230],['Aqua',195],['Mint',160],['Lime',130],['Lemon',100]]
-    .map(([name, h]) => ({ name, color: `oklch(0.85 0.1 ${h})` }))
-    .concat([{ name: 'Stone', color: 'oklch(0.85 0.012 90)' }]);
+    .map(([name, h]) => ({ name, color: `oklch(0.75 0.125 ${h})` }))
+    .concat([{ name: 'Stone', color: 'oklch(0.75 0.012 90)' }]);
   static CATS = ['Chest', 'Back', 'Legs', 'Shoulders', 'Triceps', 'Biceps'];
   static MENU_CATS = ['Chest', 'Biceps', 'Legs', 'Triceps', 'Back', 'Shoulders', 'Chest'];
   static TILE = ['Chest', 'Bi + Back', 'Legs', 'Tri + Chest', 'Back', 'Shoulders', 'Rest'];
@@ -645,7 +660,7 @@ class Component extends DCLogic {
 
   state = { db: Component.load(), tab: 'home', screen: null, sheet: null, pad: null, menuIdx: 0, exEditId: null, viewId: null, summaryId: null, backTo: null,
     exI: 0, w: 0, r: 8, restEnd: null, restLen: 90, goUntil: 0, edit: null, picker: null, newName: '',
-    pm: 9, sel: null, drag: null, hover: null, confirm: null, libCat: 'Chest' };
+    pm: 9, sel: null, drag: null, hover: null, confirm: null, libCat: 'Chest', bkMode: null, bkText: '', bkMsg: '' };
   appRef = React.createRef();
 
   today() { return Component.dkey(new Date()); }
@@ -684,6 +699,31 @@ class Component extends DCLogic {
     clearTimeout(this._ct);
     this._ct = setTimeout(() => { if (this.state.confirm === key) this.setState({ confirm: null }); }, 2500);
   }
+
+  bkExport = () => {
+    const text = JSON.stringify({ app: 'lockin90', v: 1, exportedAt: new Date().toISOString(), db: this.state.db });
+    this.setState({ bkMode: 'export', bkText: text, bkMsg: 'Select the text below and copy it somewhere safe.', confirm: null });
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(
+          () => this.setState({ bkMsg: 'Copied to clipboard. Paste it somewhere safe.' }), () => {});
+      }
+    } catch (e) {}
+  };
+  bkImport = () => this.setState({ bkMode: 'import', bkText: '', bkMsg: 'Paste a backup, then tap Restore.', confirm: null });
+  bkClose = () => this.setState({ bkMode: null, bkText: '', bkMsg: '', confirm: null });
+  bkApply = () => {
+    let d = null;
+    try { d = JSON.parse(this.state.bkText); } catch (e) {}
+    const b = d && d.db;
+    const ok = d && d.app === 'lockin90' && d.v === 1 && b
+      && Array.isArray(b.sessions) && Array.isArray(b.lib) && Array.isArray(b.menus) && Array.isArray(b.colors)
+      && b.plan && typeof b.plan === 'object' && b.walks && typeof b.walks === 'object';
+    if (!ok) { this.setState({ bkMsg: 'That text is not a Lock-in 90 backup. Nothing was changed.', confirm: null }); return; }
+    this.twoTap('bkApply', () => this.setState({
+      db: { ...b, v: 1, activeId: null },
+      bkMode: null, bkText: '', bkMsg: '', screen: null, tab: 'home', restEnd: null, sheet: null }));
+  };
 
   componentDidMount() {
     this._savedDb = this.state.db; this._lastScreen = this.state.screen;
@@ -913,6 +953,11 @@ class Component extends DCLogic {
     Object.assign(V, {
       menuRows: db.menus.map((x, i) => ({ name: x.name, color: colorOf(i), sub: i === 6 ? 'Walk 30 min' : `${x.type} · ${x.ex.length} exercises`, onClick: () => this.open('menu', { menuIdx: i }) })),
       libCount: db.lib.length, openLib: () => this.open('library'),
+      bkOpen: !!s.bkMode, bkIsImport: s.bkMode === 'import', bkText: s.bkText, bkMsg: s.bkMsg,
+      bkPh: s.bkMode === 'import' ? 'Paste your backup text here' : '',
+      bkExport: this.bkExport, bkImport: this.bkImport, bkClose: this.bkClose, bkApply: this.bkApply,
+      onBkText: ev => this.setState({ bkText: ev.target.value }),
+      bkApplyLabel: s.confirm === 'bkApply' ? 'TAP AGAIN TO REPLACE ALL DATA' : 'Restore from this text',
       resetLabel: s.confirm === 'reset' ? 'TAP AGAIN TO ERASE EVERYTHING' : 'Reset all data',
       resetTap: () => this.twoTap('reset', () => this.setState({ db: C.freshDb(), screen: null, tab: 'home', restEnd: null, sheet: null })),
     });
