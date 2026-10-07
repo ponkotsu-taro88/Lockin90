@@ -318,6 +318,14 @@
             <sc-if value="{{ c.off }}" hint-placeholder-val="{{ true }}"><div onClick="{{ c.pick }}" style="height:40px;border-radius:10px;background:#EFEFEA;box-shadow:0 2px 0 #B3B4AC;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#5F6059;cursor:pointer;">{{ c.label }}</div></sc-if>
           </sc-for>
         </div>
+        <span style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#5F6059;padding:6px 4px 0;">WEIGHT TYPE</span>
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px;">
+          <sc-for list="{{ xWts }}" as="c" hint-placeholder-count="4">
+            <sc-if value="{{ c.on }}" hint-placeholder-val="{{ false }}"><div onClick="{{ c.pick }}" style="height:40px;border-radius:10px;background:#1E1F1C;color:#ECEDE6;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;cursor:pointer;">{{ c.label }}</div></sc-if>
+            <sc-if value="{{ c.off }}" hint-placeholder-val="{{ true }}"><div onClick="{{ c.pick }}" style="height:40px;border-radius:10px;background:#EFEFEA;box-shadow:0 2px 0 #B3B4AC;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#5F6059;cursor:pointer;">{{ c.label }}</div></sc-if>
+          </sc-for>
+        </div>
+        <div style="padding:0 6px;font-size:11px;color:#5F6059;line-height:1.5;text-wrap:pretty;">Assist: the stack makes it easier, so less is harder. Per side / Dumbbell: type one side, the total is shown in brackets.</div>
         <span style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#5F6059;padding:6px 4px 0;">REP RANGE</span>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
           <div style="display:grid;grid-template-columns:44px 1fr 44px;gap:6px;height:52px;">
@@ -404,7 +412,7 @@
           <div style="display:flex;flex-direction:column;border-top:1px solid #D3D4CB;">
             <sc-for list="{{ logSets }}" as="t" hint-placeholder-count="0">
               <div onClick="{{ t.edit }}" style="display:grid;grid-template-columns:32px 1fr auto 42px;gap:8px;align-items:baseline;padding:8px 0;border-bottom:1px solid #D3D4CB;cursor:pointer;">
-                <span style="font-family:'Red Hat Mono',monospace;font-size:12px;color:#7A7B74;">S{{ t.n }}</span>
+                <span style="font-family:'Red Hat Mono',monospace;font-size:12px;color:#7A7B74;">{{ t.n }}</span>
                 <span style="font-family:'Red Hat Mono',monospace;font-size:17px;font-weight:600;">{{ t.txt }}</span>
                 <span style="font-size:10px;font-weight:700;color:#7A7B74;letter-spacing:0.06em;">EDIT</span>
                 <sc-if value="{{ t.up }}" hint-placeholder-val="{{ false }}"><span style="font-family:'Red Hat Mono',monospace;font-size:13px;font-weight:700;color:#C2500C;text-align:right;">{{ t.diff }}</span></sc-if>
@@ -412,7 +420,7 @@
               </div>
             </sc-for>
             <div style="display:grid;grid-template-columns:32px 1fr;gap:8px;align-items:baseline;padding:8px 0;">
-              <span style="font-family:'Red Hat Mono',monospace;font-size:12px;font-weight:700;color:#C2500C;">S{{ curN }}</span>
+              <span style="font-family:'Red Hat Mono',monospace;font-size:12px;font-weight:700;color:#C2500C;">{{ curN }}</span>
               <span style="font-size:12px;color:#5F6059;">{{ curNote }}</span>
             </div>
           </div>
@@ -426,10 +434,16 @@
 
     <sc-if value="{{ hasEx }}" hint-placeholder-val="{{ true }}">
       <div style="padding:10px 14px 0;display:flex;flex-direction:column;gap:8px;flex-shrink:0;">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;height:32px;">
+          <sc-for list="{{ typeTabs }}" as="y" hint-placeholder-count="4">
+            <sc-if value="{{ y.on }}" hint-placeholder-val="{{ false }}"><div onClick="{{ y.pick }}" style="border-radius:10px;background:#1E1F1C;color:#ECEDE6;box-shadow:inset 0 2px 4px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;letter-spacing:0.06em;cursor:pointer;">{{ y.label }}</div></sc-if>
+            <sc-if value="{{ y.off }}" hint-placeholder-val="{{ true }}"><div onClick="{{ y.pick }}" style="border-radius:10px;background:#EFEFEA;box-shadow:0 2px 0 #B3B4AC;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;letter-spacing:0.06em;color:#5F6059;cursor:pointer;">{{ y.label }}</div></sc-if>
+          </sc-for>
+        </div>
         <div style="display:grid;grid-template-columns:68px 1fr 68px;gap:8px;height:62px;">
           <div onClick="{{ wDown }}" style="border-radius:14px;background:#EFEFEA;box-shadow:0 3px 0 #B3B4AC,0 5px 8px rgba(0,0,0,0.08);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:500;cursor:pointer;" style-active="transform:translateY(3px);box-shadow:0 0 0 #B3B4AC;">−</div>
           <div onClick="{{ openWPad }}" style="border-radius:14px;background:#ECEDE6;box-shadow:inset 0 2px 6px rgba(0,0,0,0.12);display:flex;align-items:center;justify-content:space-between;padding:0 14px;cursor:pointer;">
-            <span style="font-size:10px;font-weight:700;color:#5F6059;display:flex;flex-direction:column;letter-spacing:0.06em;">WEIGHT<span style="font-weight:600;letter-spacing:0;">tap to type</span></span>
+            <span style="font-size:10px;font-weight:700;color:#5F6059;display:flex;flex-direction:column;letter-spacing:0.06em;">{{ wLabel }}<span style="font-weight:600;letter-spacing:0;">{{ wSub }}</span></span>
             <span style="font-family:'Red Hat Mono',monospace;font-size:34px;font-weight:600;line-height:1;">{{ w }}<span style="font-size:13px;color:#5F6059;"> kg</span></span>
           </div>
           <div onClick="{{ wUp }}" style="border-radius:14px;background:#EFEFEA;box-shadow:0 3px 0 #B3B4AC,0 5px 8px rgba(0,0,0,0.08);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:500;cursor:pointer;" style-active="transform:translateY(3px);box-shadow:0 0 0 #B3B4AC;">+</div>
@@ -466,10 +480,15 @@
         </sc-if>
       </div>
       <div style="padding:12px 14px calc(env(safe-area-inset-bottom) + 12px);display:grid;grid-template-columns:96px 1fr;gap:10px;height:calc(env(safe-area-inset-bottom) + 96px);flex-shrink:0;">
+        <sc-if value="{{ notDropOpen }}" hint-placeholder-val="{{ true }}">
         <div onClick="{{ nextEx }}" style="border-radius:18px;background:#EFEFEA;box-shadow:0 4px 0 #B3B4AC,0 6px 10px rgba(0,0,0,0.1);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:12px;font-weight:800;letter-spacing:0.06em;cursor:pointer;" style-active="transform:translateY(3px);box-shadow:0 1px 0 #B3B4AC;">NEXT<span style="font-size:14px;">▶</span></div>
+        </sc-if>
+        <sc-if value="{{ dropOpen }}" hint-placeholder-val="{{ false }}">
+          <div onClick="{{ endDrop }}" style="border-radius:18px;background:#1E1F1C;color:#ECEDE6;box-shadow:0 4px 0 #000000,0 6px 10px rgba(0,0,0,0.15);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:12px;font-weight:800;letter-spacing:0.06em;cursor:pointer;" style-active="transform:translateY(3px);box-shadow:0 1px 0 #000000;">END<span style="font-size:14px;">SET</span></div>
+        </sc-if>
         <div onClick="{{ logSet }}" style="border-radius:18px;background:#FF6B1A;box-shadow:0 4px 0 #C44A08,0 6px 10px rgba(0,0,0,0.15);display:flex;flex-direction:column;justify-content:center;padding:0 20px;gap:2px;cursor:pointer;" style-active="transform:translateY(3px);box-shadow:0 1px 0 #C44A08;">
-          <span style="font-size:20px;font-weight:800;letter-spacing:0.06em;">LOG SET {{ curN }}</span>
-          <span style="font-family:'Red Hat Mono',monospace;font-size:11px;font-weight:600;">{{ w }}kg × {{ r }}</span>
+          <span style="font-size:20px;font-weight:800;letter-spacing:0.06em;">{{ logBtnLabel }}</span>
+          <span style="font-family:'Red Hat Mono',monospace;font-size:11px;font-weight:600;">{{ logBtnSub }}</span>
         </div>
       </div>
     </sc-if>
@@ -566,7 +585,7 @@
           <span style="font-size:20px;font-weight:800;padding:0 4px;">Edit set {{ editN }}</span>
           <div style="display:grid;grid-template-columns:68px 1fr 68px;gap:8px;height:62px;">
             <div onClick="{{ eWDown }}" style="border-radius:14px;background:#EFEFEA;box-shadow:0 3px 0 #B3B4AC;display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;">−</div>
-            <div onClick="{{ eOpenPad }}" style="border-radius:14px;background:#ECEDE6;box-shadow:inset 0 2px 6px rgba(0,0,0,0.12);display:flex;align-items:center;justify-content:space-between;padding:0 14px;cursor:pointer;"><span style="font-size:10px;font-weight:700;letter-spacing:0.06em;color:#5F6059;">WEIGHT</span><span style="font-family:'Red Hat Mono',monospace;font-size:32px;font-weight:600;line-height:1;">{{ editW }}<span style="font-size:13px;color:#5F6059;"> kg</span></span></div>
+            <div onClick="{{ eOpenPad }}" style="border-radius:14px;background:#ECEDE6;box-shadow:inset 0 2px 6px rgba(0,0,0,0.12);display:flex;align-items:center;justify-content:space-between;padding:0 14px;cursor:pointer;"><span style="font-size:10px;font-weight:700;letter-spacing:0.06em;color:#5F6059;">{{ editWLabel }}</span><span style="font-family:'Red Hat Mono',monospace;font-size:32px;font-weight:600;line-height:1;">{{ editW }}<span style="font-size:13px;color:#5F6059;"> kg</span></span></div>
             <div onClick="{{ eWUp }}" style="border-radius:14px;background:#EFEFEA;box-shadow:0 3px 0 #B3B4AC;display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;">+</div>
           </div>
           <div style="display:grid;grid-template-columns:68px 1fr 68px;gap:8px;height:62px;">
@@ -624,10 +643,11 @@ class Component extends DCLogic {
   static MENU_CATS = ['Chest', 'Biceps', 'Legs', 'Triceps', 'Back', 'Shoulders', 'Chest'];
   static TILE = ['Chest', 'Bi + Back', 'Legs', 'Tri + Chest', 'Back', 'Shoulders', 'Rest'];
   static STEPS = [1, 1.25, 2, 2.5, 5, 10];
+  static WTS = [['', 'Normal'], ['assist', 'Assist'], ['plate', 'Per side'], ['dumbbell', 'Dumbbell']];
   static RESTS = [60, 90, 120, 150, 180];
   static LIB = [
     ['Chest Press','Chest',5,6,10,120],['Smith Incline Bench Press','Chest',2.5,6,10,150],['Incline Dumbbell Press','Chest',2,8,12,120],['Pec Fly','Chest',5,10,15,90],['Cable Fly','Chest',2.5,10,15,90],
-    ['Lat Pulldown','Back',5,8,12,120],['Seated Cable Row','Back',5,8,12,120],['Chin-up / Assisted Chin-up','Back',5,6,10,150],['One-arm Cable Row','Back',2.5,8,12,90],['Cable Pullover','Back',2.5,10,15,90],
+    ['Lat Pulldown','Back',5,8,12,120],['Seated Cable Row','Back',5,8,12,120],['Chin-up / Assisted Chin-up','Back',5,6,10,150,'assist'],['One-arm Cable Row','Back',2.5,8,12,90],['Cable Pullover','Back',2.5,10,15,90],
     ['Hack Squat','Legs',5,6,10,180],['45° Leg Press','Legs',10,8,12,150],['Romanian Deadlift','Legs',5,6,10,150],['Leg Curl','Legs',5,10,15,90],['Hip Thrust','Legs',5,8,12,120],['Leg Extension','Legs',5,10,15,90],['Abductor / Adductor','Legs',5,12,20,60],
     ['Shoulder Press','Shoulders',5,6,10,120],['Machine Lateral Raise','Shoulders',2.5,12,20,60],['Cable Lateral Raise','Shoulders',1.25,12,20,60],['Rear Delt Fly','Shoulders',5,12,20,60],['Face Pull','Shoulders',2.5,12,20,60],
     ['Close-grip Smith Bench Press','Triceps',2.5,6,10,120],['Cable Pushdown','Triceps',2.5,10,15,90],['Overhead Cable Extension','Triceps',2.5,10,15,90],['Triceps Machine','Triceps',5,10,15,90],
@@ -645,7 +665,7 @@ class Component extends DCLogic {
         { name: 'Shoulders', type: 'Light', min: '30–40 min', ex: [] },
         { name: 'Rest', type: 'OFF', min: 'Walk 30 min', ex: [] },
       ],
-      lib: Component.LIB.map((x, i) => ({ id: 'e' + (i + 1), name: x[0], cat: x[1], step: x[2], lo: x[3], hi: x[4], rest: x[5] })),
+      lib: Component.LIB.map((x, i) => ({ id: 'e' + (i + 1), name: x[0], cat: x[1], step: x[2], lo: x[3], hi: x[4], rest: x[5], ...(x[6] ? { wt: x[6] } : {}) })),
       plan: {}, sessions: [], walks: {}, activeId: null, seq: Component.LIB.length + 1,
     };
   }
@@ -659,7 +679,7 @@ class Component extends DCLogic {
   static diff(a, b) { return Math.round((Component.parse(b) - Component.parse(a)) / 864e5); }
 
   state = { db: Component.load(), tab: 'home', screen: null, sheet: null, pad: null, menuIdx: 0, exEditId: null, viewId: null, summaryId: null, backTo: null,
-    exI: 0, w: 0, r: 8, restEnd: null, restLen: 90, goUntil: 0, edit: null, picker: null, newName: '',
+    exI: 0, w: 0, r: 8, restEnd: null, restLen: 90, goUntil: 0, setType: '', dropOpen: false, edit: null, picker: null, newName: '',
     pm: 9, sel: null, drag: null, hover: null, confirm: null, libCat: 'Chest', bkMode: null, bkText: '', bkMsg: '' };
   appRef = React.createRef();
 
@@ -680,8 +700,10 @@ class Component extends DCLogic {
     const e = sess && sess.ex[i];
     if (!e) return { w: 0, r: 8 };
     const L = this.lib(db, e.exId) || { lo: 8 };
-    const n = e.sets.length, last = e.sets[n - 1], p = this.prev(db, e.exId, sess.id, sess.start);
-    return { w: last ? last.w : p ? p.sets[0].w : 0, r: p && p.sets[n] ? p.sets[n].r : last ? last.r : L.lo };
+    const mine = e.sets.filter(x => x.t !== 'warm'), n = mine.length;
+    const last = e.sets[e.sets.length - 1], p = this.prev(db, e.exId, sess.id, sess.start);
+    const pw = p ? p.sets.filter(x => x.t !== 'warm') : null;
+    return { w: last ? last.w : pw && pw[0] ? pw[0].w : 0, r: pw && pw[n] ? pw[n].r : last ? last.r : L.lo };
   }
   done(db, k) { return db.sessions.some(x => x.date === k && x.end) || ((db.walks[k] || {}).min || 0) >= 30; }
   streak(db, k) {
@@ -774,13 +796,28 @@ class Component extends DCLogic {
       return { screen: 'log', exI: 0, restEnd: null, goUntil: 0, ...this.prefill(d, sess, 0) };
     });
   };
-  selEx = j => this.setState(st => ({ exI: j, ...this.prefill(st.db, this.active(st.db), j) }));
+  selEx = j => this.setState(st => ({ exI: j, dropOpen: false, setType: '', ...this.prefill(st.db, this.active(st.db), j) }));
   logSet = () => this.upd((db, s) => {
     const a = this.active(db), e = a && a.ex[s.exI];
     if (!e) return;
-    e.sets.push({ w: s.w, r: s.r });
     const L = this.lib(db, e.exId), rest = (L && L.rest) || 90, now = Date.now();
-    return { restEnd: now + rest * 1000, restLen: rest, goUntil: 0, ...this.prefill(db, a, s.exI) };
+    if (s.dropOpen) {
+      const last = e.sets[e.sets.length - 1];
+      if (last && last.t === 'drop') last.d = (last.d || []).concat([{ w: s.w, r: s.r }]);
+      return { goUntil: 0 };
+    }
+    const set = { w: s.w, r: s.r };
+    if (s.setType) set.t = s.setType;
+    if (s.setType === 'drop') set.d = [];
+    e.sets.push(set);
+    if (s.setType === 'drop') return { dropOpen: true, goUntil: 0 };
+    return { restEnd: now + rest * 1000, restLen: rest, goUntil: 0, setType: '', ...this.prefill(db, a, s.exI) };
+  });
+  endDrop = () => this.setState(st => {
+    const db = st.db, a = this.active(db), e = a && a.ex[st.exI];
+    const L = e && this.lib(db, e.exId), rest = (L && L.rest) || 90;
+    return { dropOpen: false, setType: '', restEnd: Date.now() + rest * 1000, restLen: rest, goUntil: 0,
+      ...this.prefill(db, a, st.exI) };
   });
   finish = () => this.upd(db => {
     const a = this.active(db);
@@ -788,7 +825,7 @@ class Component extends DCLogic {
     if (!a) return { screen: null };
     if (!a.ex.some(e => e.sets.length)) { db.sessions = db.sessions.filter(x => x.id !== a.id); return { screen: null, tab: 'home', restEnd: null }; }
     a.end = Date.now();
-    return { screen: 'summary', summaryId: a.id, restEnd: null };
+    return { screen: 'summary', summaryId: a.id, restEnd: null, dropOpen: false, setType: '' };
   });
   openPicker = pk => this.setState({ sheet: 'picker', picker: pk, newName: '' });
   pickInto(d, st, id) {
@@ -817,6 +854,7 @@ class Component extends DCLogic {
   };
   moveEx(i, dir) { this.upd((d, st) => { const ex = d.menus[st.menuIdx].ex, j = i + dir; if (j < 0 || j >= ex.length) return; [ex[i], ex[j]] = [ex[j], ex[i]]; }); }
   setX(f, v) { this.upd((d, st) => { const y = this.lib(d, st.exEditId); if (y) y[f] = v; }); }
+  setXwt(v) { this.upd((d, st) => { const y = this.lib(d, st.exEditId); if (!y) return; if (v) y.wt = v; else delete y.wt; }); }
   addWalk(n) { const k = this.today(); this.upd(d => { const w = d.walks[k] || (d.walks[k] = { steps: 0, min: 0 }); w.min = Math.max(0, Math.min(600, w.min + n)); }); }
   assign(key, i) { if (key < Component.FIRST || key > Component.LAST) return; this.upd(d => { d.plan[key] = i; }); }
   openPad(kind, title, unit, init, dot) { this.setState({ pad: { kind, title, unit, init, dot, val: '' } }); }
@@ -864,12 +902,17 @@ class Component extends DCLogic {
   renderVals() {
     const s = this.state, db = s.db, C = Component, P = C.P, k = this.today(), now = Date.now();
     const fmt = v => (Number.isInteger(v) ? String(v) : String(+(+v).toFixed(2)));
+    const wTxt = (L, w) => { const t = L && L.wt; return t === 'assist' ? `−${fmt(w)}kg`
+      : t === 'plate' || t === 'dumbbell' ? `${fmt(w)}kg (${fmt(w * 2)})` : `${fmt(w)}kg`; };
+    const wTag = L => { const t = L && L.wt; return t === 'assist' ? ' · ASSIST' : t === 'plate' ? ' · PER SIDE' : t === 'dumbbell' ? ' · EACH' : ''; };
     const mmss = sec => `${String(Math.floor(sec / 60)).padStart(2, '0')}:${String(sec % 60).padStart(2, '0')}`;
     const restLabel = v => (v < 120 ? v + 's' : (v / 60) + 'm');
     const colorOf = mi => P[db.colors[mi]].color;
     const dLabel = key => C.parse(key).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-    const sum = arr => arr.reduce((t, x) => t + x.r, 0);
-    const exSub = L => `${L.lo}–${L.hi} reps · ±${fmt(L.step)}kg · rest ${restLabel(L.rest)}`;
+    const setReps = x => x.r + (x.d ? x.d.reduce((t, y) => t + y.r, 0) : 0);
+    const workSets = arr => arr.filter(x => x.t !== 'warm');
+    const sum = arr => workSets(arr).reduce((t, x) => t + setReps(x), 0);
+    const exSub = L => `${L.lo}–${L.hi} reps · ±${fmt(L.step)}kg · rest ${restLabel(L.rest)}${wTag(L)}`;
     const dayN = Math.min(90, Math.max(1, C.diff(C.DAY1, k) + 1));
     const a = this.active(db);
     const isTabs = !s.screen;
@@ -890,7 +933,7 @@ class Component extends DCLogic {
       planned, notPlanned: !planned, isRest, todayColor: planned ? colorOf(mi) : '#B3B4AC', todayName: M ? M.name : '',
       todayMeta: !M ? '' : isRest ? 'Walk 30 min' : `${M.type} · ${M.min} · ${M.ex.length} exercises`,
       todayHasMenu: planned && !isRest, emptyMenu: planned && !isRest && M.ex.length === 0,
-      homeEx: M && !isRest ? M.ex.map(id => { const L = this.lib(db, id) || { lo: 8, hi: 12 }; const p = this.prev(db, id); return { name: L.name || 'Untitled', sub: p ? `${fmt(p.sets[0].w)}kg · ${p.sets.map(x => x.r).join(' ')}` : `${L.lo}–${L.hi} reps` }; }) : [],
+      homeEx: M && !isRest ? M.ex.map(id => { const L = this.lib(db, id) || { lo: 8, hi: 12 }; const p = this.prev(db, id); return { name: L.name || 'Untitled', sub: p ? `${wTxt(L, p.sets[0].w)} · ${p.sets.map(x => x.r).join(' ')}` : `${L.lo}–${L.hi} reps` }; }) : [],
       editToday: () => this.open('menu', { menuIdx: mi }), goPlan: () => this.go('plan'),
       streak: this.streak(db, k), weekStr: String(this.weekCount(db, k)), todayStatus: this.done(db, k) ? 'DONE' : 'OPEN',
       walkMin: wk.min, walkPct: Math.min(100, wk.min / 30 * 100) + '%', stepsStr: wk.steps.toLocaleString('en-US'),
@@ -987,6 +1030,7 @@ class Component extends DCLogic {
         hdrLabel: 'EXERCISE', hdrTitle: X.name || 'New exercise', xName: X.name,
         onXName: e => { const val = e.target.value; this.setX('name', val); },
         xCats: C.CATS.map(c => ({ label: c, on: X.cat === c, off: X.cat !== c, pick: () => this.setX('cat', c) })),
+        xWts: C.WTS.map(([v, label]) => ({ label, on: (X.wt || '') === v, off: (X.wt || '') !== v, pick: () => this.setXwt(v) })),
         xSteps: C.STEPS.map(v => ({ label: fmt(v), on: X.step === v, off: X.step !== v, pick: () => this.setX('step', v) })),
         xRests: C.RESTS.map(v => ({ label: restLabel(v), on: X.rest === v, off: X.rest !== v, pick: () => this.setX('rest', v) })),
         xLo: X.lo, xHi: X.hi,
@@ -1002,7 +1046,8 @@ class Component extends DCLogic {
       Object.assign(V, {
         hdrLabel: dLabel(VS.date).toUpperCase(), hdrTitle: db.menus[VS.menu].name + (db.menus[VS.menu].type !== 'OFF' ? ' ' + db.menus[VS.menu].type : ''),
         vTime: VS.end ? Math.max(1, Math.round((VS.end - VS.start) / 60000)) + 'm' : '—', vSets: allSets.length, vReps: sum(allSets),
-        vEx: VS.ex.filter(e => e.sets.length).map(e => ({ name: e.name, sets: e.sets.map((t, i) => ({ n: i + 1, txt: `${fmt(t.w)}kg × ${t.r}` })) })),
+        vEx: VS.ex.filter(e => e.sets.length).map(e => { const XL = this.lib(db, e.exId);
+          return { name: e.name, sets: e.sets.map((t, i) => ({ n: i + 1, txt: `${wTxt(XL, t.w)} × ${t.r}` })) }; }),
         vHasWalk: !!(w && (w.min || w.steps)), vWalk: w ? `Walk ${w.min} min · ${w.steps.toLocaleString('en-US')} steps` : '',
         vDelLabel: s.confirm === 'dels' ? 'TAP AGAIN TO DELETE' : 'Delete workout',
         vDel: () => this.twoTap('dels', () => this.upd((d, st) => { d.sessions = d.sessions.filter(y => y.id !== st.viewId); return { screen: null }; })),
@@ -1022,18 +1067,35 @@ class Component extends DCLogic {
       });
       if (e) {
         const L = this.lib(db, e.exId) || { lo: 8, hi: 12, step: 2.5, rest: 90 }, p = this.prev(db, e.exId, a.id, a.start);
-        const nowT = sum(e.sets), prevT = p ? sum(p.sets.slice(0, e.sets.length)) : 0, dl = nowT - prevT;
+        const nowW = workSets(e.sets), prevW = p ? workSets(p.sets) : [];
+        const nowT = sum(e.sets), prevT = prevW.slice(0, nowW.length).reduce((t, x) => t + setReps(x), 0), dl = nowT - prevT;
         const resting = !!s.restEnd, left = resting ? Math.max(0, s.restEnd - now) : 0;
         Object.assign(V, {
-          exName: e.name, target: `${L.lo}–${L.hi}`, stepStr: `±${fmt(L.step)}kg`,
-          prevStr: p ? `${fmt(p.sets[0].w)}kg · ${p.sets.map(t => t.r).join(' / ')} · Σ${sum(p.sets)}` : 'No previous record',
-          logSets: e.sets.map((t, j) => { const pr = p && p.sets[j] ? p.sets[j].r : null, d = pr == null ? null : t.r - pr;
-            return { n: j + 1, txt: `${fmt(t.w)}kg × ${t.r}`, diff: d == null ? '' : d > 0 ? '+' + d : d === 0 ? '±0' : '−' + -d, up: d != null && d > 0, flat: !(d != null && d > 0),
-              edit: () => this.setState({ sheet: 'setEdit', edit: { i, j, w: t.w, r: t.r }, confirm: null }) }; }),
-          curN: e.sets.length + 1, curNote: now < s.goUntil ? 'Rest over · go!' : 'Now · adjust below',
+          exName: e.name, target: `${L.lo}–${L.hi}`, stepStr: `±${fmt(L.step)}kg${wTag(L)}`,
+          prevStr: p && prevW.length ? `${wTxt(L, prevW[0].w)} · ${prevW.map(t => setReps(t)).join(' / ')} · Σ${sum(p.sets)}` : 'No previous record',
+          logSets: (() => { let wn = 0, sn = 0; return e.sets.map((t, j) => {
+            const isW = t.t === 'warm', label = isW ? 'W' + (++wn) : 'S' + (++sn);
+            const pv = isW ? null : prevW[sn - 1], d = pv == null ? null : setReps(t) - setReps(pv);
+            const chain = t.d && t.d.length ? ' → ' + t.d.map(x => `${fmt(x.w)}×${x.r}`).join(' → ') : '';
+            const tg = t.t === 'neg' ? ' · NEG' : '';
+            return { n: label, txt: `${wTxt(L, t.w)} × ${t.r}${chain}${tg}`,
+              diff: d == null ? '' : d > 0 ? '+' + d : d === 0 ? '±0' : '−' + -d, up: d != null && d > 0, flat: !(d != null && d > 0),
+              edit: () => this.setState({ sheet: 'setEdit', edit: { i, j, w: t.w, r: t.r }, confirm: null }) }; }); })(),
+          curN: s.setType === 'warm' ? 'W' + (e.sets.filter(x => x.t === 'warm').length + 1) : 'S' + (nowW.length + 1),
+          curNote: s.dropOpen ? 'Drop set open · lower the weight and log again' : now < s.goUntil ? 'Rest over · go!' : 'Now · adjust below',
+          dropOpen: s.dropOpen, notDropOpen: !s.dropOpen, endDrop: this.endDrop,
+          typeTabs: [['warm', 'WARM-UP'], ['', 'NORMAL'], ['neg', 'NEGATIVE'], ['drop', 'DROP']].map(([v, label]) => ({
+            label, on: s.setType === v, off: s.setType !== v,
+            pick: () => { if (!this.state.dropOpen) this.setState({ setType: v }); } })),
+          logBtnLabel: s.dropOpen ? 'ADD DROP' : s.setType === 'drop' ? 'LOG & DROP'
+            : s.setType === 'warm' ? `WARM-UP ${e.sets.filter(x => x.t === 'warm').length + 1}`
+            : s.setType === 'neg' ? `LOG SET ${nowW.length + 1} · NEG` : `LOG SET ${nowW.length + 1}`,
           totalStr: !e.sets.length ? (p ? 'Prefilled from last session' : 'First time · tap weight to type') : p ? `Total ${nowT} reps (last: ${prevT})` : `Total ${nowT} reps`,
           deltaStr: e.sets.length && p ? (dl > 0 ? `+${dl}` : dl === 0 ? '±0' : `−${-dl}`) : '',
           w: fmt(s.w), r: s.r,
+          wLabel: L.wt === 'assist' ? 'ASSIST' : 'WEIGHT',
+          wSub: L.wt === 'plate' ? `per side · ${fmt(s.w * 2)} kg total` : L.wt === 'dumbbell' ? `each · ${fmt(s.w * 2)} kg total` : 'tap to type',
+          logBtnSub: `${wTxt(L, s.w)} × ${s.r}`,
           wDown: () => this.setState(st => ({ w: Math.max(0, +(st.w - L.step).toFixed(2)) })), wUp: () => this.setState(st => ({ w: +(st.w + L.step).toFixed(2) })),
           rDown: () => this.setState(st => ({ r: Math.max(1, st.r - 1) })), rUp: () => this.setState(st => ({ r: st.r + 1 })),
           openWPad: () => this.openPad('w', 'WEIGHT', 'kg', fmt(s.w), true),
@@ -1083,12 +1145,14 @@ class Component extends DCLogic {
       const L = this.lib(db, a.ex[ed.i].exId) || { step: 2.5 };
       Object.assign(V, {
         editN: ed.j + 1, editW: fmt(ed.w), editR: ed.r,
+        editWLabel: (() => { const aa = this.active(db), ee = aa && aa.ex[ed.i], LL = ee && this.lib(db, ee.exId);
+          return LL && LL.wt === 'assist' ? 'ASSIST' : 'WEIGHT'; })(),
         eWDown: () => this.setState(st => ({ edit: { ...st.edit, w: Math.max(0, +(st.edit.w - L.step).toFixed(2)) } })),
         eWUp: () => this.setState(st => ({ edit: { ...st.edit, w: +(st.edit.w + L.step).toFixed(2) } })),
         eRDown: () => this.setState(st => ({ edit: { ...st.edit, r: Math.max(1, st.edit.r - 1) } })),
         eRUp: () => this.setState(st => ({ edit: { ...st.edit, r: st.edit.r + 1 } })),
         eOpenPad: () => this.openPad('editW', 'WEIGHT', 'kg', fmt(ed.w), true),
-        eSave: () => this.upd((d, st) => { const y = this.active(d); if (y && y.ex[st.edit.i]) y.ex[st.edit.i].sets[st.edit.j] = { w: st.edit.w, r: st.edit.r }; return { sheet: null, edit: null }; }),
+        eSave: () => this.upd((d, st) => { const y = this.active(d); if (y && y.ex[st.edit.i]) y.ex[st.edit.i].sets[st.edit.j] = { ...y.ex[st.edit.i].sets[st.edit.j], w: st.edit.w, r: st.edit.r }; return { sheet: null, edit: null }; }),
         eDelLabel: s.confirm === 'dset' ? 'TAP AGAIN' : 'DELETE',
         eDel: () => this.twoTap('dset', () => this.upd((d, st) => { const y = this.active(d); if (y && y.ex[st.edit.i]) y.ex[st.edit.i].sets.splice(st.edit.j, 1); return { sheet: null, edit: null }; })),
       });
